@@ -1,0 +1,40 @@
+# ==============================================================================
+# Project T253 – Escalator Misuse & Unsafe Riding Behaviour Detection
+# Python Dependencies (Compatible with Python 3.10 and Windows 11)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Core Deep Learning & Computer Vision
+# Note: For NVIDIA GPU acceleration on Windows, install PyTorch with CUDA first:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+# For CPU-only installation:
+#   pip install torch torchvision
+# ------------------------------------------------------------------------------
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+
+# ------------------------------------------------------------------------------
+# Scientific Computing & Data Processing
+# ------------------------------------------------------------------------------
+numpy>=1.23.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# ------------------------------------------------------------------------------
+# Visualization & Image Utilities
+# ------------------------------------------------------------------------------
+matplotlib>=3.7.0
+Pillow>=9.5.0
+
+# ------------------------------------------------------------------------------
+# Workflow, Configuration & Progress Tracking
+# ------------------------------------------------------------------------------
+PyYAML>=6.0
+tqdm>=4.65.0
+
+# ------------------------------------------------------------------------------
+# Testing & Quality Assurance
+# ------------------------------------------------------------------------------
+pytest>=7.4.0
