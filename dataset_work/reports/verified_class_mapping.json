@@ -1,0 +1,58 @@
+{
+  "dataset_name": "T253_Escalator_Action_Recognition",
+  "version": "1.0",
+  "date_created": "2026-11-11",
+  "learning_task": "Video-Level Temporal Activity Classification",
+  "description": "Unified 5-class taxonomy for human activity and posture monitoring on escalators, curated from sanitized SPHAR video streams.",
+  "target_classes": {
+    "0": "NORMAL_RIDING_STANDING",
+    "1": "WALKING",
+    "2": "RUNNING_RUSHING",
+    "3": "SITTING_SQUATTING",
+    "4": "FALLEN_PERSON"
+  },
+  "class_to_id": {
+    "NORMAL_RIDING_STANDING": 0,
+    "WALKING": 1,
+    "RUNNING_RUSHING": 2,
+    "SITTING_SQUATTING": 3,
+    "FALLEN_PERSON": 4
+  },
+  "class_definitions": {
+    "NORMAL_RIDING_STANDING": {
+      "id": 0,
+      "description": "Passenger standing upright or with minor natural postural adjustment without locomotion on escalator step.",
+      "rules": "Upright spine, feet stationary, center of mass stable.",
+      "source_filters": "SPHAR neutral clips filtered strictly for standing_upright; excludes gesture/vehicle interaction."
+    },
+    "WALKING": {
+      "id": 1,
+      "description": "Standard bipedal walking gait in forward direction.",
+      "rules": "Alternating foot contact, upright torso, standard cadence (1.0 - 1.8 m/s). Includes walking with luggage.",
+      "source_filters": "SPHAR walking (standard walking, carrying object, wandering walk)."
+    },
+    "RUNNING_RUSHING": {
+      "id": 2,
+      "description": "Rapid locomotion, hurrying, or sprinting across steps.",
+      "rules": "Forward torso lean, extended stride length, presence of flight phase, high cadence.",
+      "source_filters": "SPHAR running (running, jogging; excluding acrobatic jumping)."
+    },
+    "SITTING_SQUATTING": {
+      "id": 3,
+      "description": "Passenger seated on escalator step or in deep squat with knees flexed.",
+      "rules": "Center of mass significantly lowered (<65% standing height), knees flexed >90\u00b0, buttocks near or on surface.",
+      "source_filters": "SPHAR sitting (clean ground/bench/chair sitting; excludes vehicle ingress) + remapped CASIA crouch."
+    },
+    "FALLEN_PERSON": {
+      "id": 4,
+      "description": "Passenger recumbent, supine, or collapsed on steps following slip, trip, or medical event.",
+      "rules": "Sudden loss of vertical equilibrium, body axis horizontal/recumbent on floor/steps.",
+      "source_filters": "SPHAR falling (fainting collapse, slipping, lying on floor)."
+    }
+  },
+  "spatial_behaviours_outside_classifier": {
+    "WRONG_DIRECTION_WALKING": "Evaluated via Person Tracker trajectory vector (v_person dot v_escalator < 0), NOT appearance classifier.",
+    "BOUNDARY_CROSSING": "Evaluated via Person Bounding Box IoU/intersection with handrail polygon ROI.",
+    "OVERCROWDING": "Evaluated via active person count in defined escalator entrance/comb-plate zones."
+  }
+}
