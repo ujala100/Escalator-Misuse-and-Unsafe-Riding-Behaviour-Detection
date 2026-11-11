@@ -1,0 +1,87 @@
+pipeline_version: '1.0'
+description: Project T253 Activity Recognition Data Augmentation Configuration
+input_specs:
+  target_resolution:
+  - 224
+  - 224
+  num_frames_per_clip: 16
+  temporal_sampling_mode: uniform_stride
+  channels: 3
+  normalization:
+    mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+training_augmentations:
+  random_horizontal_flip:
+    enabled: true
+    probability: 0.5
+    justification: Bipedal kinematics and postures (standing, sitting, running, falling)
+      remain identical under left-right reflection.
+  color_jitter:
+    enabled: true
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.05
+    probability: 0.7
+    justification: Simulates diverse CCTV illumination (indoor fluorescent, direct
+      sunlight, shadows).
+  mild_rotation:
+    enabled: true
+    degrees_range:
+    - -5.0
+    - 5.0
+    probability: 0.5
+    justification: Simulates camera physical mounting tilt angle variation without
+      disrupting vertical gravitational posture orientation.
+  random_scale_crop:
+    enabled: true
+    scale_range:
+    - 0.85
+    - 1.0
+    ratio_range:
+    - 0.9
+    - 1.1
+    probability: 0.5
+    justification: Simulates passenger distance / zoom variation relative to ceiling
+      CCTV camera.
+  temporal_jitter:
+    enabled: true
+    probability: 0.5
+    justification: Random offset within each temporal segment prevents overfitting
+      to specific frame indices.
+validation_test_transforms:
+  spatial_resize:
+  - 256
+  - 256
+  center_crop:
+  - 224
+  - 224
+  normalization:
+    mean:
+    - 0.485
+    - 0.456
+    - 0.406
+    std:
+    - 0.229
+    - 0.224
+    - 0.225
+  temporal_sampling: deterministic_uniform_16_frames
+  justification: Evaluation must remain 100% deterministic, unaugmented, and representative
+    of real-world CCTV streaming.
+class_imbalance_handling:
+  strategy: class_weighted_cross_entropy_and_focal_loss
+  class_weights:
+    0: 0.667
+    1: 0.4012
+    2: 2.2294
+    3: 2.2781
+    4: 8.2841
+  focal_loss_gamma: 2.0
+  justification: Prevents majority classes (walking/standing) from dominating gradients
+    over rare safety-critical anomalies (fallen/sitting).
